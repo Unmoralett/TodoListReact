@@ -1,19 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import TodoList from './components/TodoList'
-import AppHeader from './components/AppHeader'
-import SearchPanel from './components/SearchPanel'
+import App from "./components/App";
 
-const App = () => {
-  return (
-    <div>
-      <span>{ (new Date()).toString() }</span>
-      <AppHeader />
-      <SearchPanel />
-      <TodoList />
-    </div>
-  );
-};
-
-ReactDOM.render(<App/>, document.getElementById("root"));
+ReactDOM.render(<App />, document.getElementById("root"));
