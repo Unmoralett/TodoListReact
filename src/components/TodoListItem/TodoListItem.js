@@ -2,33 +2,15 @@ import React, { Component } from "react";
 import "./TodoListItem.css";
 
 export default class TodoListItem extends Component {
-  constructor() {
-    super();
-    this.state = {
-      done: false,
-      important: false,
-    };
-  }
-
-  onLabelClick = () => {
-    this.setState((state) => {
-      return {
-        done: !state.done,
-      };
-    });
-  };
-
-  onMarkImportant = () => {
-    this.setState((state) => {
-      return {
-        important: !state.important,
-      };
-    });
-  };
-
   render() {
-    const { label, onDeleted } = this.props;
-    const { done, important } = this.state;
+    const {
+      label,
+      onDeleted,
+      onToggleImportant,
+      onToggleDone,
+      done,
+      important,
+    } = this.props;
     let classNames = "todo-list-item-label d-flex justify-content-between";
     if (done) {
       classNames += " text-decoration-line-through";
@@ -40,7 +22,7 @@ export default class TodoListItem extends Component {
 
     return (
       <span className={classNames}>
-        <span className="todo-list-item" onClick={this.onLabelClick}>
+        <span className="todo-list-item" onClick={onToggleDone}>
           {label}
         </span>
 
@@ -48,7 +30,7 @@ export default class TodoListItem extends Component {
           <button
             type="button"
             className="btn btn-outline-success m-2"
-            onClick={this.onMarkImportant}
+            onClick={onToggleImportant}
           >
             <i className="bi bi-exclamation-lg"></i>
           </button>

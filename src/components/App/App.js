@@ -12,16 +12,24 @@ export default class App extends Component {
     this.maxId = 100;
     this.state = {
       todoData: [
-        { label: "Drink Cofee", id: 1 },
-        { label: "Drink Tea", id: 2 },
-        { label: "Drink Soke", id: 3 },
+        this.createTodoItem("Drink Cofee"),
+        this.createTodoItem("Have a lunch"),
+        this.createTodoItem("Learn React"),
       ],
     };
   }
 
+  createTodoItem(label) {
+    return {
+      label,
+      important: false,
+      done: false,
+      id: this.maxId++,
+    };
+  }
+
   deleteItem = (id) => {
-    this.setState(() => {
-      const { todoData } = this.state;
+    this.setState(({ todoData }) => {
       const index = todoData.findIndex((el) => el.id === id);
       const newArray = [
         ...todoData.slice(0, index),
@@ -34,10 +42,31 @@ export default class App extends Component {
   };
 
   addItem = (text) => {
-    this.setState(() => {
-      const { todoData } = this.state;
-      const newItem = { label: text, id: this.maxId++ };
+    const newItem = this.createTodoItem(text);
+    this.setState(({ todoData }) => {
       const newArray = [...todoData, newItem];
+      return {
+        todoData: newArray,
+      };
+    });
+  };
+
+  onToggleImportant = (id) => {
+    console.log("done", id);
+  };
+
+  onToggleDone = (id) => {
+    this.setState(({ todoData }) => {
+      const index = todoData.findIndex((el) => el.id === id);
+
+      const oldItem = todoData[index];
+      const newItem = { ...oldItem, done: !oldItem.done };
+
+      const newArray = [
+        ...todoData.slice(0, index),
+        newItem,
+        ...todoData.slice(index + 1),
+      ];
       return {
         todoData: newArray,
       };
@@ -47,9 +76,14 @@ export default class App extends Component {
   render() {
     return (
       <div className="container">
-        <AppHeader />
+        <AppHeader toDo={1} done={3} />
         <SubHeader />
-        <TodoList todoData={this.state.todoData} onDeleted={this.deleteItem} />
+        <TodoList
+          todoData={this.state.todoData}
+          onDeleted={this.deleteItem}
+          onToggleImportant={this.onToggleImportant}
+          onToggleDone={this.onToggleDone}
+        />
         <Footer onItemAdded={this.addItem} />
       </div>
     );
