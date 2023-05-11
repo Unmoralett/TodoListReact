@@ -27,7 +27,7 @@ export default class TodoListItem extends Component {
   };
 
   render() {
-    const { label } = this.props;
+    const { label, onDeleted } = this.props;
     const { done, important } = this.state;
     let classNames = "todo-list-item-label d-flex justify-content-between";
     if (done) {
@@ -52,7 +52,11 @@ export default class TodoListItem extends Component {
           >
             <i className="bi bi-exclamation-lg"></i>
           </button>
-          <button type="button" className="btn btn-outline-danger">
+          <button
+            type="button"
+            className="btn btn-outline-danger"
+            onClick={onDeleted}
+          >
             <i className="bi bi-trash3"></i>
           </button>
         </span>
