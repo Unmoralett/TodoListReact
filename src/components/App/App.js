@@ -51,35 +51,42 @@ export default class App extends Component {
     });
   };
 
+  toggleProperty(arr, id, propName) {
+    const index = arr.findIndex((el) => el.id === id);
+
+    const oldItem = arr[index];
+    const newItem = { ...oldItem, [propName]: !oldItem[propName] };
+
+    return [...arr.slice(0, index), newItem, ...arr.slice(index + 1)];
+  }
+
   onToggleImportant = (id) => {
-    console.log("done", id);
+    this.setState(({ todoData }) => {
+      return {
+        todoData: this.toggleProperty(todoData, id, 'important'),
+      };
+    });
   };
 
   onToggleDone = (id) => {
     this.setState(({ todoData }) => {
-      const index = todoData.findIndex((el) => el.id === id);
-
-      const oldItem = todoData[index];
-      const newItem = { ...oldItem, done: !oldItem.done };
-
-      const newArray = [
-        ...todoData.slice(0, index),
-        newItem,
-        ...todoData.slice(index + 1),
-      ];
       return {
-        todoData: newArray,
+        todoData: this.toggleProperty(todoData, id, 'done'),
       };
     });
   };
 
   render() {
+    const { todoData } = this.state;
+    const doneCount = todoData.filter((el) => el.done).length;
+    const todoCount = todoData.length - doneCount;
+
     return (
       <div className="container">
-        <AppHeader toDo={1} done={3} />
+        <AppHeader toDo={todoCount} done={doneCount} />
         <SubHeader />
         <TodoList
-          todoData={this.state.todoData}
+          todoData={todoData}
           onDeleted={this.deleteItem}
           onToggleImportant={this.onToggleImportant}
           onToggleDone={this.onToggleDone}
