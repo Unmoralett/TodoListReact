@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "./Footer.css";
 
 export default class Footer extends Component {
   constructor() {
@@ -25,7 +24,7 @@ export default class Footer extends Component {
 
   render() {
     return (
-      <form className="footer d-flex" onSubmit={this.onSubmit}>
+      <form className="footer d-flex justify-content-center" onSubmit={this.onSubmit}>
         <input
           type="text"
           className="form-control"
@@ -33,7 +32,7 @@ export default class Footer extends Component {
           placeholder="What need to be done"
           value={this.state.label}
         />
-        <button className="btn btn-warning m-3">Add Item</button>
+        <button className="btn btn-warning ms-3 text-nowrap">Add task</button>
       </form>
     );
   }

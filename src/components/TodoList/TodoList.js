@@ -17,7 +17,7 @@ const TodoList = ({ todoData, onDeleted, onToggleImportant, onToggleDone }) => {
       </li>
     );
   });
-  return <ul className="list-group todo-list">{element}</ul>;
+  return <ul className="list-group todo-list mb-3">{element}</ul>;
 };
 
 export default TodoList;

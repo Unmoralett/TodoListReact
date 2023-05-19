@@ -1,15 +1,38 @@
-import React from "react";
+import React, { Component } from "react";
 
-import SearchPanel from "../SearchPanel";
-import ItemStatusFilter from "../ItemStatusFilter";
+export default class SubHeader extends Component {
+  render() {
+    const { onFilter, onSearch, filter } = this.props;
+    const buttons = [
+      { name: "all", label: "All" },
+      { name: "active", label: "Active" },
+      { name: "done", label: "Done" },
+    ].map(({ name, label }) => {
+      const isActive = filter === label;
+      return (
+        <button
+          type="button"
+          className={`btn btn-outline-info ${isActive? 'active' : ''}`}
+          onClick={(evt) => onFilter(evt.target.innerText)}
+          key={name}
+        >
+          {label}
+        </button>
+      );
+    });
+    return (
+      <div className="d-flex justify-content-between mt-3 mb-3">
+        <input
+          type="text"
+          className="form-control btn-danger me-3"
+          placeholder="search"
+          onChange={(evt) => onSearch(evt.target.value)}
+        ></input>
 
-const SubHeader = () => {
-  return (
-    <div className="d-flex justify-content-between m-3">
-        <SearchPanel />
-        <ItemStatusFilter/>
-  </div>
-  )
-};
-
-export default SubHeader;
+        <div className="btn-group" role="group" aria-label="Basic example">
+          {buttons}
+        </div>
+      </div>
+    );
+  }
+}

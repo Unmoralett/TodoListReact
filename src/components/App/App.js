@@ -16,6 +16,8 @@ export default class App extends Component {
         this.createTodoItem("Have a lunch"),
         this.createTodoItem("Learn React"),
       ],
+      visible: "",
+      filter: "",
     };
   }
 
@@ -63,7 +65,7 @@ export default class App extends Component {
   onToggleImportant = (id) => {
     this.setState(({ todoData }) => {
       return {
-        todoData: this.toggleProperty(todoData, id, 'important'),
+        todoData: this.toggleProperty(todoData, id, "important"),
       };
     });
   };
@@ -71,22 +73,81 @@ export default class App extends Component {
   onToggleDone = (id) => {
     this.setState(({ todoData }) => {
       return {
-        todoData: this.toggleProperty(todoData, id, 'done'),
+        todoData: this.toggleProperty(todoData, id, "done"),
       };
     });
   };
 
-  render() {
+  onFilterDone = () => {
     const { todoData } = this.state;
+    const filterData = todoData.filter((el) => el.done);
+    this.setState(() => {
+      return {
+        todoData: filterData,
+      };
+    });
+  };
+
+  setStateFilter = (value) => {
+    this.setState((state) => {
+      return {
+        ...state,
+        filter: value,
+      };
+    });
+  };
+
+  filterData = (items, value) => {
+    switch (value) {
+      case "Active":
+        return items.filter((item) => !item.done);
+      case "Done":
+        return items.filter((item) => item.done);
+
+      default:
+        return items;
+    }
+  };
+
+  setStateSearch = (text) => {
+    this.setState((state) => {
+      return {
+        ...state,
+        visible: text,
+      };
+    });
+  };
+
+  search = (items, visible) => {
+    if (visible === 0) {
+      return items;
+    } else {
+      return items.filter((item) => {
+        return item.label.toLowerCase().indexOf(visible.toLowerCase()) > -1;
+      });
+    }
+  };
+
+  render() {
+    const { todoData, visible, filter } = this.state;
+    const visibleItems = this.filterData(
+      this.search(todoData, visible),
+      filter
+    );
+
     const doneCount = todoData.filter((el) => el.done).length;
     const todoCount = todoData.length - doneCount;
 
     return (
       <div className="container">
         <AppHeader toDo={todoCount} done={doneCount} />
-        <SubHeader />
+        <SubHeader
+          onFilter={this.setStateFilter}
+          onSearch={this.setStateSearch}
+          filter={filter}
+        />
         <TodoList
-          todoData={todoData}
+          todoData={visibleItems}
           onDeleted={this.deleteItem}
           onToggleImportant={this.onToggleImportant}
           onToggleDone={this.onToggleDone}

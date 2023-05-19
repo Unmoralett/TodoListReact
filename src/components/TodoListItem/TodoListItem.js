@@ -29,7 +29,7 @@ export default class TodoListItem extends Component {
         <span>
           <button
             type="button"
-            className="btn btn-outline-success m-2"
+            className="btn btn-outline-success me-2"
             onClick={onToggleImportant}
           >
             <i className="bi bi-exclamation-lg"></i>
